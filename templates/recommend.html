@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Recommender System</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<style>
+    .text-white{
+        color:white
+    }
+    #searched {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#item {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#item li a{
+  border: 1px solid #ddd;
+  margin-top: -1px;
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block;
+}
+
+#item li a:hover:not(.header) {
+  background-color: #eee;
+}
+</style>
+<script>
+function func() {
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('searched');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("item");
+  li = ul.getElementsByTagName('li');
+
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+</script>
+<body style="background-color:black">
+
+    <nav class="navbar" style="background-color:#00bfff">
+        <a class="navbar-brand mb-0 h1" style="color:white; padding-left:15px ; height:60px ; font-size:40px">BOOK RECOMMENDER</a>
+        <ul class="nav nav-pills" style="padding-right:20px">
+            <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/" style="color:white">HOME</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link active" href="/recommend" style="color:white">RECOMMEND</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container" style="padding-top:30px">
+        <div class="row" style="padding-top:20px">
+            <div class="col-md-12">
+                <h1 class="text-white" style="font-size:50px">Recommend Books</h1>
+                <form action="/recommend_books" method="post" style="padding-top:20px" >
+                    <input  name="user_input" type="text" id="searched" onkeyup="func()" placeholder="Book name" title="Type in a category" class="form-control"><br>
+                    <ul id="item">
+                        {% for i in range(book_name|length) %}
+                            <li><a href="#" >{{ book_name[i] }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <input type="submit" class="btn btn-lg btn-warning">
+                </form>
+            </div>
+
+            {% if data %}
+
+             {% for i in data %}
+                <div class="col-md-3" style="margin-top:50px">
+                    <div class="card">
+                        <div class="card-body">
+                            <img class="card-img-top" src="{{i[2]}}">
+                            <h4 class="text-black">{{i[0]}}</h4>
+                            <p class="text-black">{{i[1]}}</p>
+                        </div>
+                    </div>
+                </div>
+             {% endfor %}
+
+            {% endif %}
+
+
+
+
+        </div>
+    </div>
+
+</body>
+</html>
